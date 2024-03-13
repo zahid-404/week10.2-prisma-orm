@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// insert
 async function insertUser(
   username: string,
   password: string,
@@ -18,9 +19,33 @@ async function insertUser(
     select: {
       id: true,
       username: true,
-    }
+    },
   });
   console.log(res);
 }
 
-insertUser("kirat@gmail.com", "123456", "harkirat", "singh");
+// update
+
+interface UpdateParams {
+  firstName: string;
+  lastName: string;
+}
+
+async function updateUser(
+  username: string,
+  { firstName, lastName }: UpdateParams
+) {
+  const res = await prisma.user.update({
+    where: { username },
+    data: {
+      firstName,
+      lastName,
+    },
+  });
+  console.log(res);
+}
+
+updateUser("admin1", {
+  firstName: "new name",
+  lastName: "singh",
+});
